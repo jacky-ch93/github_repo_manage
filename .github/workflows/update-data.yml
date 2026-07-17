@@ -1,6 +1,9 @@
 name: Update repository stats
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
     inputs:
       scan_lfs:
@@ -41,11 +44,16 @@ jobs:
 
       - name: Generate repository data
         env:
-          GITHUB_TOKEN: ${{ secrets.REPO_STATS_TOKEN }}
+          REPO_STATS_TOKEN: ${{ secrets.REPO_STATS_TOKEN }}
           GITHUB_OWNER: ${{ github.repository_owner }}
           SCAN_LFS: ${{ github.event.inputs.scan_lfs || 'true' }}
           LFS_POINTER_SCAN_LIMIT: ${{ github.event.inputs.lfs_pointer_scan_limit || '120' }}
-        run: node scripts/fetch-github-repos.mjs
+        run: |
+          if [ -n "$REPO_STATS_TOKEN" ]; then
+            GITHUB_TOKEN="$REPO_STATS_TOKEN" node scripts/fetch-github-repos.mjs
+          else
+            echo "REPO_STATS_TOKEN is not set. Deploying committed data/repos.json."
+          fi
 
       - name: Commit refreshed data
         run: |
