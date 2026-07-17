@@ -1,0 +1,68 @@
+name: Update repository stats
+
+on:
+  workflow_dispatch:
+    inputs:
+      scan_lfs:
+        description: "Scan default-branch Git LFS pointers"
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      lfs_pointer_scan_limit:
+        description: "Max candidate LFS pointer files checked per repository"
+        required: true
+        default: "120"
+        type: string
+  schedule:
+    - cron: "18 2 * * *"
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Generate repository data
+        env:
+          GITHUB_TOKEN: ${{ secrets.REPO_STATS_TOKEN }}
+          GITHUB_OWNER: ${{ github.repository_owner }}
+          SCAN_LFS: ${{ github.event.inputs.scan_lfs || 'true' }}
+          LFS_POINTER_SCAN_LIMIT: ${{ github.event.inputs.lfs_pointer_scan_limit || '120' }}
+        run: node scripts/fetch-github-repos.mjs
+
+      - name: Commit refreshed data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/repos.json
+          if git diff --cached --quiet; then
+            echo "No data changes."
+          else
+            git commit -m "Update repository stats"
+            git push
+          fi
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - uses: actions/deploy-pages@v4

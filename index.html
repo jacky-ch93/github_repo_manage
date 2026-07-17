@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GitHub 仓库资产仪表盘</title>
+    <meta name="description" content="统计 GitHub 仓库分类、大小、可见性与 LFS 指针用量的静态仪表盘。" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Repository Portfolio</p>
+        <h1>GitHub 仓库资产仪表盘</h1>
+      </div>
+      <div class="updated" id="updatedAt">等待数据</div>
+    </header>
+
+    <main>
+      <section class="metrics" aria-label="总体统计">
+        <article class="metric">
+          <span>仓库总数</span>
+          <strong id="totalRepos">-</strong>
+        </article>
+        <article class="metric">
+          <span>Public</span>
+          <strong id="publicRepos">-</strong>
+        </article>
+        <article class="metric">
+          <span>Private</span>
+          <strong id="privateRepos">-</strong>
+        </article>
+        <article class="metric">
+          <span>仓库大小</span>
+          <strong id="totalSize">-</strong>
+        </article>
+        <article class="metric">
+          <span>LFS 指针体积</span>
+          <strong id="lfsSize">-</strong>
+        </article>
+      </section>
+
+      <section class="panels">
+        <article class="panel wide">
+          <div class="panel-title">
+            <h2>仓库分类</h2>
+            <span id="ownerName">-</span>
+          </div>
+          <div class="taxonomy" id="taxonomy"></div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-title">
+            <h2>语言分布</h2>
+          </div>
+          <div id="languageBars" class="bars"></div>
+        </article>
+      </section>
+
+      <section class="toolbar" aria-label="筛选和排序">
+        <input id="searchInput" type="search" placeholder="搜索仓库、语言、主题" />
+        <select id="visibilityFilter" aria-label="按可见性筛选">
+          <option value="all">全部可见性</option>
+          <option value="public">Public</option>
+          <option value="private">Private</option>
+        </select>
+        <select id="languageFilter" aria-label="按语言筛选">
+          <option value="all">全部语言</option>
+        </select>
+        <select id="categoryFilter" aria-label="按分类筛选">
+          <option value="all">全部分类</option>
+        </select>
+        <select id="sortSelect" aria-label="排序">
+          <option value="pushed">最近更新</option>
+          <option value="size">仓库大小</option>
+          <option value="lfs">LFS 体积</option>
+          <option value="name">名称</option>
+        </select>
+      </section>
+
+      <section class="repo-list" id="repoList" aria-label="仓库列表"></section>
+
+      <section class="notes">
+        <h2>统计说明</h2>
+        <p>仓库大小来自 GitHub Repository API 的 <code>size</code> 字段。LFS 统计为默认分支中已识别 Git LFS pointer 文件记录的真实文件大小，不能代表完整账单用量。</p>
+      </section>
+    </main>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
