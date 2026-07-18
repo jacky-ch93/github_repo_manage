@@ -1,23 +1,29 @@
-# Repo Index 品牌系统
+# Repo Index 品牌资产
 
 Repo Index 的视觉系统面向代码仓库管理、开发者工具和内部资产页面。核心原则是数据优先、结构清晰、状态可辨。
 
-## 资产
+## 目录
 
-- `assets/repo-index-mark.svg`：默认彩色标志，用于浅色背景和 favicon
-- `assets/repo-index-mark-mono.svg`：单色标志，用于深色或单色场景
-- `assets/search.svg`：Lucide 风格搜索图标，用于表单控件
-- `brand.css`：品牌 token、基础排版和通用组件
-- `brand.html`：标志、色彩、排版和组件的可视化预览
-- `brand-preview.css`：仅供品牌预览页使用，不需要引入业务页面
+- `logos/repo-index-mark.svg`：默认彩色标志，用于浅色背景和 favicon
+- `logos/repo-index-mark-mono.svg`：单色标志，用于深色或单色场景
+- `icons/search.svg`：Lucide 风格搜索图标，用于表单控件
+- `colors.json`：供设计工具、脚本和其他技术栈读取的品牌配色
+- `tokens.css`：颜色、字体、圆角、阴影和动效 Token
+- `components.css`：基础排版和通用界面组件，内部自动引入 `tokens.css`
 
 ## 在其他页面中复用
 
-先引入品牌基础样式，再引入页面自己的样式：
+直接引入组件基础样式，再引入页面自己的样式：
 
 ```html
-<link rel="stylesheet" href="./brand.css" />
+<link rel="stylesheet" href="./brand-assets/components.css" />
 <link rel="stylesheet" href="./your-page.css" />
+```
+
+只需要 Token 时，可以单独引入：
+
+```css
+@import "./brand-assets/tokens.css";
 ```
 
 基础层提供以下稳定接口：

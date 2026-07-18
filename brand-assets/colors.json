@@ -1,0 +1,24 @@
+{
+  "brand": {
+    "indexBlue": "#315FC4",
+    "signalGreen": "#167B60",
+    "privateAmber": "#A9610B",
+    "alertCoral": "#B84F3B"
+  },
+  "foundation": {
+    "canvas": "#F2F4F1",
+    "surface": "#FFFFFF",
+    "surfaceSubtle": "#F7F8F6",
+    "ink": "#171B19",
+    "inkSoft": "#3F4742",
+    "muted": "#6B756F",
+    "line": "#D8DED9",
+    "lineStrong": "#B8C1BB"
+  },
+  "soft": {
+    "blue": "#E9EFFC",
+    "green": "#E4F4ED",
+    "amber": "#FBEFD9",
+    "coral": "#FAE9E5"
+  }
+}
