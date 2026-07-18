@@ -11,6 +11,8 @@ Repo Index 的视觉系统面向代码仓库管理、开发者工具和内部资
 - `tokens.css`：颜色、字体、圆角、阴影和动效 Token
 - `components.css`：基础排版和通用界面组件，内部自动引入 `tokens.css`
 
+仓库根目录的 `brand.css` 和 `assets/` 仅用于兼容 GitHub Pages 缓存中的旧 HTML，不作为品牌资产源。设计与开发引用一律以本目录为准。
+
 ## 在其他页面中复用
 
 直接引入组件基础样式，再引入页面自己的样式：
