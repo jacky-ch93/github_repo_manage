@@ -3,88 +3,165 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>GitHub 仓库资产仪表盘</title>
+    <title>Repo Index · GitHub 仓库资产仪表盘</title>
     <meta name="description" content="统计 GitHub 仓库分类、大小、可见性与 LFS 指针用量的静态仪表盘。" />
+    <meta name="theme-color" content="#171b19" />
+    <link rel="icon" href="./assets/repo-index-mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./brand.css" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <header class="topbar">
-      <div>
-        <p class="eyebrow">Repository Portfolio</p>
-        <h1>GitHub 仓库资产仪表盘</h1>
+    <a class="skip-link" href="#mainContent">跳到主要内容</a>
+
+    <header class="app-header">
+      <div class="header-inner">
+        <a class="brand-lockup" href="./" aria-label="Repo Index 首页">
+          <img class="brand-mark" src="./assets/repo-index-mark.svg" alt="" />
+          <span>
+            <span class="brand-name">Repo Index</span>
+            <span class="brand-product">Asset Console</span>
+          </span>
+        </a>
+
+        <nav class="header-nav" aria-label="主要导航">
+          <a class="nav-link active" href="./" aria-current="page">仓库</a>
+          <a class="nav-link" href="./brand.html">品牌资产</a>
+        </nav>
+
+        <div class="sync-state">
+          <span class="sync-dot" aria-hidden="true"></span>
+          <span id="updatedAt">等待数据</span>
+        </div>
       </div>
-      <div class="updated" id="updatedAt">等待数据</div>
     </header>
 
-    <main>
+    <main id="mainContent">
+      <section class="page-heading" aria-labelledby="pageTitle">
+        <div>
+          <p class="ri-kicker">Repository Portfolio</p>
+          <h1 id="pageTitle">代码仓库总览</h1>
+        </div>
+        <div class="owner-identity">
+          <span class="owner-label">GitHub owner</span>
+          <strong id="ownerName">-</strong>
+        </div>
+      </section>
+
       <section class="metrics" aria-label="总体统计">
-        <article class="metric">
-          <span>仓库总数</span>
+        <article class="metric metric-primary">
+          <span class="metric-label">仓库总数</span>
           <strong id="totalRepos">-</strong>
+          <span class="metric-foot">Repositories</span>
         </article>
         <article class="metric">
-          <span>Public</span>
+          <span class="metric-label">公开仓库</span>
           <strong id="publicRepos">-</strong>
+          <span class="metric-foot metric-positive">Public</span>
         </article>
         <article class="metric">
-          <span>Private</span>
+          <span class="metric-label">私有仓库</span>
           <strong id="privateRepos">-</strong>
+          <span class="metric-foot metric-warning">Private</span>
         </article>
         <article class="metric">
-          <span>仓库大小</span>
+          <span class="metric-label">仓库体积</span>
           <strong id="totalSize">-</strong>
+          <span class="metric-foot">Git objects</span>
         </article>
         <article class="metric">
-          <span>LFS 指针体积</span>
+          <span class="metric-label">LFS 指针体积</span>
           <strong id="lfsSize">-</strong>
+          <span class="metric-foot">Default branch</span>
         </article>
       </section>
 
-      <section class="panels">
-        <article class="panel wide">
-          <div class="panel-title">
-            <h2>仓库分类</h2>
-            <span id="ownerName">-</span>
+      <section class="insight-grid" aria-label="仓库洞察">
+        <article class="insight-panel taxonomy-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="panel-index">01 / Taxonomy</p>
+              <h2>资产分类</h2>
+            </div>
           </div>
           <div class="taxonomy" id="taxonomy"></div>
         </article>
 
-        <article class="panel">
-          <div class="panel-title">
-            <h2>语言分布</h2>
+        <article class="insight-panel language-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="panel-index">02 / Languages</p>
+              <h2>语言分布</h2>
+            </div>
+            <span class="panel-caption">Top 10</span>
           </div>
           <div id="languageBars" class="bars"></div>
         </article>
       </section>
 
-      <section class="toolbar" aria-label="筛选和排序">
-        <input id="searchInput" type="search" placeholder="搜索仓库、语言、主题" />
-        <select id="visibilityFilter" aria-label="按可见性筛选">
-          <option value="all">全部可见性</option>
-          <option value="public">Public</option>
-          <option value="private">Private</option>
-        </select>
-        <select id="languageFilter" aria-label="按语言筛选">
-          <option value="all">全部语言</option>
-        </select>
-        <select id="categoryFilter" aria-label="按分类筛选">
-          <option value="all">全部分类</option>
-        </select>
-        <select id="sortSelect" aria-label="排序">
-          <option value="pushed">最近更新</option>
-          <option value="size">仓库大小</option>
-          <option value="lfs">LFS 体积</option>
-          <option value="name">名称</option>
-        </select>
+      <section class="repository-section" aria-labelledby="repoHeading">
+        <div class="section-heading">
+          <div>
+            <p class="ri-kicker">Repository Directory</p>
+            <h2 id="repoHeading">仓库目录</h2>
+          </div>
+          <span class="result-count" id="resultCount" aria-live="polite">0 个结果</span>
+        </div>
+
+        <div class="toolbar" role="search" aria-label="筛选和排序仓库">
+          <label class="search-field">
+            <span class="ri-visually-hidden">搜索仓库</span>
+            <span class="search-symbol" aria-hidden="true"></span>
+            <input class="ri-field" id="searchInput" type="search" placeholder="搜索仓库、语言或主题" autocomplete="off" />
+          </label>
+          <label>
+            <span class="ri-visually-hidden">按可见性筛选</span>
+            <select class="ri-field" id="visibilityFilter">
+              <option value="all">全部可见性</option>
+              <option value="public">Public</option>
+              <option value="private">Private</option>
+            </select>
+          </label>
+          <label>
+            <span class="ri-visually-hidden">按语言筛选</span>
+            <select class="ri-field" id="languageFilter">
+              <option value="all">全部语言</option>
+            </select>
+          </label>
+          <label>
+            <span class="ri-visually-hidden">按分类筛选</span>
+            <select class="ri-field" id="categoryFilter">
+              <option value="all">全部分类</option>
+            </select>
+          </label>
+          <label>
+            <span class="ri-visually-hidden">排序方式</span>
+            <select class="ri-field" id="sortSelect">
+              <option value="pushed">最近更新</option>
+              <option value="size">仓库大小</option>
+              <option value="lfs">LFS 体积</option>
+              <option value="name">名称</option>
+            </select>
+          </label>
+          <button class="ri-button reset-button" id="clearFilters" type="button">重置</button>
+        </div>
+
+        <div class="active-filter-state" id="activeFilters" aria-live="polite"></div>
+        <section class="repo-list" id="repoList" aria-label="仓库列表"></section>
       </section>
 
-      <section class="repo-list" id="repoList" aria-label="仓库列表"></section>
-
-      <section class="notes">
-        <h2>统计说明</h2>
-        <p>仓库大小来自 GitHub Repository API 的 <code>size</code> 字段。LFS 统计为默认分支中已识别 Git LFS pointer 文件记录的真实文件大小，不能代表完整账单用量。</p>
-      </section>
+      <aside class="data-note">
+        <span class="note-marker" aria-hidden="true">i</span>
+        <div>
+          <h2>数据口径</h2>
+          <p>仓库大小来自 GitHub Repository API。LFS 为默认分支中已识别 pointer 文件记录的真实文件大小，不代表完整账单用量。</p>
+        </div>
+      </aside>
     </main>
+
+    <footer class="app-footer">
+      <span>Repo Index</span>
+      <span>GitHub repository asset console</span>
+    </footer>
 
     <script src="./app.js" type="module"></script>
   </body>

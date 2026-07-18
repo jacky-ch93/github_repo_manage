@@ -20,6 +20,9 @@ const els = {
   languageFilter: document.querySelector("#languageFilter"),
   categoryFilter: document.querySelector("#categoryFilter"),
   sortSelect: document.querySelector("#sortSelect"),
+  clearFilters: document.querySelector("#clearFilters"),
+  activeFilters: document.querySelector("#activeFilters"),
+  resultCount: document.querySelector("#resultCount"),
 };
 
 const collator = new Intl.Collator("zh-CN", { sensitivity: "base" });
@@ -43,8 +46,15 @@ async function init() {
 }
 
 function bindEvents() {
-  [els.searchInput, els.visibilityFilter, els.languageFilter, els.sortSelect].forEach((el) => {
+  [els.searchInput, els.visibilityFilter, els.languageFilter, els.categoryFilter, els.sortSelect].forEach((el) => {
     el.addEventListener("input", applyFilters);
+  });
+  els.clearFilters.addEventListener("click", clearFilters);
+  els.searchInput.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && els.searchInput.value) {
+      els.searchInput.value = "";
+      applyFilters();
+    }
   });
 }
 
@@ -76,7 +86,7 @@ function renderTaxonomy(summary) {
         <div class="taxonomy-group">
           <b>${escapeHtml(title)}</b>
           <div class="chip-row">
-            ${entries.slice(0, 12).map((item) => `<span class="chip">${escapeHtml(item.name)} ${number(item.count)}</span>`).join("")}
+            ${entries.slice(0, 12).map((item) => `<span class="taxonomy-chip">${escapeHtml(item.name)} <em>${number(item.count)}</em></span>`).join("")}
           </div>
         </div>
       `;
@@ -94,7 +104,7 @@ function renderLanguageBars(languages) {
         <div class="bar-row">
           <span class="bar-label" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</span>
           <span class="bar-track"><span class="bar-fill" style="width:${width}%"></span></span>
-          <span>${number(item.count)}</span>
+          <span class="bar-count">${number(item.count)}</span>
         </div>
       `;
     })
@@ -129,42 +139,90 @@ function applyFilters() {
     })
     .sort((a, b) => sortRepos(a, b, sort));
 
+  renderFilterState({ query, visibility, language, category, sort });
   renderRepos();
 }
 
 function renderRepos() {
+  els.resultCount.textContent = `${number(state.filtered.length)} 个结果`;
+
   if (!state.filtered.length) {
-    els.repoList.innerHTML = `<article class="repo-card"><div><div class="repo-title"><strong>没有匹配的仓库</strong></div><p class="repo-desc">调整搜索或筛选条件后再试。</p></div></article>`;
+    els.repoList.innerHTML = `<div class="empty-state"><strong>没有匹配的仓库</strong><p>调整搜索或筛选条件后再试。</p></div>`;
     return;
   }
 
   els.repoList.innerHTML = state.filtered
     .map((repo) => `
       <article class="repo-card">
-        <div>
+        <div class="repo-main">
           <div class="repo-title">
-            <a href="${repo.url}" target="_blank" rel="noreferrer">${escapeHtml(repo.name)}</a>
-            <span class="badge ${repo.visibility === "private" ? "private" : ""}">${repo.visibility}</span>
-            ${repo.archived ? '<span class="badge">archived</span>' : ""}
-            ${repo.fork ? '<span class="badge">fork</span>' : ""}
+            <a href="${escapeHtml(repo.url)}" target="_blank" rel="noreferrer">${escapeHtml(repo.name)}<span class="external-arrow" aria-hidden="true">↗</span></a>
+            <span class="ri-badge ${repo.visibility === "private" ? "danger" : "success"}">${escapeHtml(repo.visibility)}</span>
+            ${repo.archived ? '<span class="ri-badge warning">archived</span>' : ""}
+            ${repo.fork ? '<span class="ri-badge info">fork</span>' : ""}
           </div>
           <p class="repo-desc">${escapeHtml(repo.description || "无描述")}</p>
           <div class="repo-meta">
-            <span>${escapeHtml(repo.primaryLanguage || "Unknown")}</span>
+            <span class="language" style="--language-color:${languageColor(repo.primaryLanguage)}">${escapeHtml(repo.primaryLanguage || "Unknown")}</span>
             <span>${escapeHtml(repo.category || "Uncategorized")}</span>
-            <span>${number(repo.stars)} stars</span>
-            <span>${number(repo.forks)} forks</span>
+            <span>★ ${number(repo.stars)}</span>
+            <span>⑂ ${number(repo.forks)}</span>
             <span>更新 ${formatDate(repo.pushedAt)}</span>
-            ${(repo.topics || []).slice(0, 5).map((topic) => `<span>#${escapeHtml(topic)}</span>`).join("")}
+            ${(repo.topics || []).slice(0, 5).map((topic) => `<span class="repo-topic">#${escapeHtml(topic)}</span>`).join("")}
           </div>
         </div>
         <div class="repo-stats">
-          <span><strong>${formatBytes(repo.sizeBytes)}</strong>仓库大小</span>
-          <span><strong>${formatBytes(repo.lfsBytes)}</strong>LFS 指针</span>
+          <span class="repo-stat"><strong>${formatBytes(repo.sizeBytes)}</strong>仓库大小</span>
+          <span class="repo-stat"><strong>${formatBytes(repo.lfsBytes)}</strong>LFS 指针</span>
         </div>
       </article>
     `)
     .join("");
+}
+
+function renderFilterState({ query, visibility, language, category, sort }) {
+  const filters = [];
+  if (query) filters.push(`搜索 “${query}”`);
+  if (visibility !== "all") filters.push(visibility);
+  if (language !== "all") filters.push(language);
+  if (category !== "all") filters.push(category);
+  if (sort !== "pushed") filters.push(`排序 ${els.sortSelect.selectedOptions[0].textContent}`);
+
+  els.activeFilters.innerHTML = filters.length
+    ? `<span class="filter-summary">已应用：${filters.map(escapeHtml).join(" / ")}</span>`
+    : "";
+  els.clearFilters.disabled = filters.length === 0;
+}
+
+function clearFilters() {
+  els.searchInput.value = "";
+  els.visibilityFilter.value = "all";
+  els.languageFilter.value = "all";
+  els.categoryFilter.value = "all";
+  els.sortSelect.value = "pushed";
+  applyFilters();
+  els.searchInput.focus();
+}
+
+function languageColor(language) {
+  const colors = {
+    JavaScript: "#d7a900",
+    TypeScript: "#315fc4",
+    Python: "#367c99",
+    HTML: "#c85a3b",
+    CSS: "#7f55b3",
+    "C++": "#b84f6a",
+    C: "#69727f",
+    "C#": "#4e8b48",
+    Java: "#b6632a",
+    Ruby: "#a83e38",
+    Go: "#16859a",
+    Matlab: "#c46c2d",
+    Cython: "#896f2c",
+    Prolog: "#966333",
+    Unknown: "#a5ada8",
+  };
+  return colors[language || "Unknown"] || "#6b756f";
 }
 
 function sortRepos(a, b, sort) {
