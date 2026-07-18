@@ -51,6 +51,7 @@ node scripts/fetch-github-repos.mjs
 
 - `workflow_dispatch`：手动触发，可选择是否扫描 LFS，以及每个仓库最多检查多少个 LFS pointer 候选文件
 - `schedule`：每天 UTC 02:18 自动刷新
+- `push`：只部署仓库里已提交的 `data/repos.json`，不重新扫描 GitHub API
 - 生成 `data/repos.json` 后，如果数据变化，CI 会自动提交并部署 GitHub Pages
 - CI job 设置了 30 分钟超时，避免大仓库或 API 变慢时长期挂起
 

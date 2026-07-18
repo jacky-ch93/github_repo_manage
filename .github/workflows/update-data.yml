@@ -49,7 +49,9 @@ jobs:
           SCAN_LFS: ${{ github.event.inputs.scan_lfs || 'true' }}
           LFS_POINTER_SCAN_LIMIT: ${{ github.event.inputs.lfs_pointer_scan_limit || '120' }}
         run: |
-          if [ -n "$REPO_STATS_TOKEN" ]; then
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            echo "Push event: deploying committed data/repos.json."
+          elif [ -n "$REPO_STATS_TOKEN" ]; then
             GITHUB_TOKEN="$REPO_STATS_TOKEN" node scripts/fetch-github-repos.mjs
           else
             echo "REPO_STATS_TOKEN is not set. Deploying committed data/repos.json."

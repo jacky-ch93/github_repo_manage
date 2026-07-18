@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-07-18T05:06:20.476Z",
+  "generatedAt": "2026-07-18T14:32:02.113Z",
   "owner": "jacky-ch93",
   "summary": {
     "total": 138,
@@ -10,8 +10,8 @@
     "forks": 91,
     "sources": 47,
     "templates": 0,
-    "totalSizeBytes": 13371993088,
-    "totalLfsBytes": 5069844191,
+    "totalSizeBytes": 13371995136,
+    "totalLfsBytes": 4884333495,
     "categories": [
       {
         "name": "Uncategorized",
@@ -108,7 +108,7 @@
       "category": "Frontend",
       "primaryLanguage": "JavaScript",
       "topics": [],
-      "sizeBytes": 26624,
+      "sizeBytes": 28672,
       "lfsBytes": 0,
       "lfsPointerCount": 0,
       "lfsScanStatus": "no-lfs-attributes",
@@ -122,12 +122,12 @@
       "isTemplate": false,
       "defaultBranch": "main",
       "createdAt": "2026-07-17T14:20:08Z",
-      "updatedAt": "2026-07-17T14:35:42Z",
-      "pushedAt": "2026-07-17T14:35:19Z"
+      "updatedAt": "2026-07-18T05:06:27Z",
+      "pushedAt": "2026-07-18T05:06:21Z"
     },
     {
       "name": "gptcode-me-markdown",
-      "description": null,
+      "description": "Authenticated Markdown archive of gptcode.me for GitHub Pages publishing, including local HTML, Markdown, and downloaded assets.",
       "visibility": "public",
       "url": "https://github.com/jacky-ch93/gptcode-me-markdown",
       "category": "Uncategorized",
@@ -147,12 +147,12 @@
       "isTemplate": false,
       "defaultBranch": "main",
       "createdAt": "2026-07-11T14:10:51Z",
-      "updatedAt": "2026-07-11T14:24:53Z",
+      "updatedAt": "2026-07-18T14:24:10Z",
       "pushedAt": "2026-07-11T14:24:47Z"
     },
     {
       "name": "agent-capability-hub",
-      "description": null,
+      "description": "Reusable agent capability hub with skills, MCP servers, prompt packs, templates, docs, and sync/export automation.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/agent-capability-hub",
       "category": "Backend",
@@ -172,7 +172,7 @@
       "isTemplate": false,
       "defaultBranch": "main",
       "createdAt": "2026-06-30T14:59:27Z",
-      "updatedAt": "2026-06-30T15:00:58Z",
+      "updatedAt": "2026-07-18T14:24:11Z",
       "pushedAt": "2026-06-30T15:00:11Z"
     },
     {
@@ -302,7 +302,7 @@
     },
     {
       "name": "news-digest-weapp",
-      "description": null,
+      "description": "Native WeChat mini program for NewsDigest with finance and tech feeds, AI summaries, sharing, caching, and summary history.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/news-digest-weapp",
       "category": "Frontend",
@@ -322,12 +322,12 @@
       "isTemplate": false,
       "defaultBranch": "main",
       "createdAt": "2026-03-01T09:15:44Z",
-      "updatedAt": "2026-03-13T15:53:06Z",
+      "updatedAt": "2026-07-18T14:24:11Z",
       "pushedAt": "2026-03-13T15:53:02Z"
     },
     {
       "name": "news-digest-app",
-      "description": null,
+      "description": "Full-stack TypeScript app with React frontend, Express API, MongoDB storage, JWT auth, uploads, and realtime updates.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/news-digest-app",
       "category": "Frontend",
@@ -347,7 +347,7 @@
       "isTemplate": false,
       "defaultBranch": "main",
       "createdAt": "2026-03-01T08:57:57Z",
-      "updatedAt": "2026-03-05T16:08:23Z",
+      "updatedAt": "2026-07-18T14:24:12Z",
       "pushedAt": "2026-03-05T15:59:08Z"
     },
     {
@@ -461,7 +461,7 @@
       "sizeBytes": 52215808,
       "lfsBytes": 1154383798,
       "lfsPointerCount": 6,
-      "lfsScanStatus": "complete",
+      "lfsScanStatus": "partial",
       "stars": 0,
       "forks": 0,
       "watchers": 0,
@@ -486,7 +486,7 @@
       "sizeBytes": 55131136,
       "lfsBytes": 1893286508,
       "lfsPointerCount": 16,
-      "lfsScanStatus": "complete",
+      "lfsScanStatus": "partial",
       "stars": 0,
       "forks": 0,
       "watchers": 0,
@@ -627,7 +627,7 @@
     },
     {
       "name": "MVTEC_AD_3D",
-      "description": null,
+      "description": "3D anomaly-detection playground for MVTec 3D data visualization, depth/point-cloud conversion, and model experiments.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/MVTEC_AD_3D",
       "category": "Backend",
@@ -647,12 +647,12 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-07-10T04:33:54Z",
-      "updatedAt": "2023-07-10T04:51:17Z",
+      "updatedAt": "2026-07-18T14:24:12Z",
       "pushedAt": "2023-07-10T04:51:12Z"
     },
     {
       "name": "robot_sdk",
-      "description": null,
+      "description": "Robot SDK combining calibration, 6D pose estimation, and robot control components with C++ build and deployment tooling.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/robot_sdk",
       "category": "Uncategorized",
@@ -672,12 +672,12 @@
       "isTemplate": false,
       "defaultBranch": "main",
       "createdAt": "2023-06-12T09:01:24Z",
-      "updatedAt": "2023-06-12T09:09:02Z",
+      "updatedAt": "2026-07-18T14:24:13Z",
       "pushedAt": "2023-07-06T08:31:46Z"
     },
     {
       "name": "ppr-plus",
-      "description": null,
+      "description": "PyTorch workspace for PPR-Net and PPR-Net++ 6D pose estimation in stacked bin-picking scenarios.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/ppr-plus",
       "category": "Backend",
@@ -697,7 +697,7 @@
       "isTemplate": false,
       "defaultBranch": "main",
       "createdAt": "2023-03-20T07:35:18Z",
-      "updatedAt": "2023-03-20T08:49:25Z",
+      "updatedAt": "2026-07-18T14:24:13Z",
       "pushedAt": "2023-07-06T08:30:02Z"
     },
     {
@@ -727,7 +727,7 @@
     },
     {
       "name": "imagenet-example",
-      "description": null,
+      "description": "ImageNet training example with distributed utilities, model definitions, scheduler, loss functions, and experiment scripts.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/imagenet-example",
       "category": "Backend",
@@ -747,12 +747,12 @@
       "isTemplate": false,
       "defaultBranch": "7-add-irl-net-for-training",
       "createdAt": "2023-07-05T10:56:17Z",
-      "updatedAt": "2023-07-05T10:57:18Z",
+      "updatedAt": "2026-07-18T14:24:14Z",
       "pushedAt": "2023-07-05T10:58:28Z"
     },
     {
       "name": "GAD",
-      "description": null,
+      "description": "Surface defect detection experiments based on anomaly generation, with training scripts, benchmarks, and GAD package code.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/GAD",
       "category": "Backend",
@@ -772,7 +772,7 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-07-05T08:42:43Z",
-      "updatedAt": "2023-07-05T08:43:16Z",
+      "updatedAt": "2026-07-18T14:24:14Z",
       "pushedAt": "2023-07-05T08:43:20Z"
     },
     {
@@ -827,7 +827,7 @@
     },
     {
       "name": "openni2",
-      "description": null,
+      "description": "Conan packaging workspace for OpenNI2 2.2.0 with Linux and Windows build artifacts and configuration.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/openni2",
       "category": "Uncategorized",
@@ -847,12 +847,12 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-07-04T08:25:26Z",
-      "updatedAt": "2023-07-04T08:26:16Z",
+      "updatedAt": "2026-07-18T14:24:15Z",
       "pushedAt": "2023-07-04T08:26:11Z"
     },
     {
       "name": "libpng",
-      "description": null,
+      "description": "Conan packaging workspace for libpng 1.6.40 with Linux and Windows build artifacts and configuration.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/libpng",
       "category": "Uncategorized",
@@ -872,12 +872,12 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-07-04T07:51:04Z",
-      "updatedAt": "2023-07-04T07:51:41Z",
+      "updatedAt": "2026-07-18T14:24:16Z",
       "pushedAt": "2023-07-04T07:51:35Z"
     },
     {
       "name": "flann",
-      "description": null,
+      "description": "Conan packaging workspace for FLANN 1.9.1 with Linux and Windows build artifacts and configuration.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/flann",
       "category": "Uncategorized",
@@ -897,12 +897,12 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-07-04T07:48:16Z",
-      "updatedAt": "2023-07-04T07:50:33Z",
+      "updatedAt": "2026-07-18T14:24:16Z",
       "pushedAt": "2023-07-04T07:50:21Z"
     },
     {
       "name": "eigen",
-      "description": null,
+      "description": "Conan packaging workspace for Eigen 3.4.0 with headers, profile configuration, and package recipe files.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/eigen",
       "category": "Uncategorized",
@@ -922,12 +922,12 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-07-04T07:31:22Z",
-      "updatedAt": "2023-07-04T07:32:18Z",
+      "updatedAt": "2026-07-18T14:24:17Z",
       "pushedAt": "2023-07-04T07:32:06Z"
     },
     {
       "name": "ceres-solver",
-      "description": null,
+      "description": "Conan packaging workspace for Ceres Solver 2.1.0 with Linux and Windows build artifacts and configuration.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/ceres-solver",
       "category": "Uncategorized",
@@ -947,12 +947,12 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-07-04T07:29:06Z",
-      "updatedAt": "2023-07-04T07:30:43Z",
+      "updatedAt": "2026-07-18T14:24:17Z",
       "pushedAt": "2023-07-04T07:30:31Z"
     },
     {
       "name": "2d_3d_pose_estimation",
-      "description": null,
+      "description": "Python examples for 3D-to-2D pose estimation using YOLOv5 keypoint detection and PnP-based 6D pose recovery.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/2d_3d_pose_estimation",
       "category": "Backend",
@@ -972,12 +972,12 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-06-30T09:25:30Z",
-      "updatedAt": "2023-06-30T09:26:27Z",
+      "updatedAt": "2026-07-18T14:24:18Z",
       "pushedAt": "2023-06-30T09:26:22Z"
     },
     {
       "name": "uniAD",
-      "description": null,
+      "description": "PyTorch workspace for UniAD multi-class anomaly detection experiments on MVTec-AD and related datasets.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/uniAD",
       "category": "Backend",
@@ -997,7 +997,7 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-06-30T07:00:18Z",
-      "updatedAt": "2023-06-30T07:01:38Z",
+      "updatedAt": "2026-07-18T14:24:19Z",
       "pushedAt": "2023-06-30T07:01:32Z"
     },
     {
@@ -1052,7 +1052,7 @@
     },
     {
       "name": "region_growing",
-      "description": null,
+      "description": "Point-cloud region growing experiments in Python, including sample PCD data and segmentation scripts.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/region_growing",
       "category": "Backend",
@@ -1072,12 +1072,12 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-06-20T11:56:48Z",
-      "updatedAt": "2023-06-20T11:57:01Z",
+      "updatedAt": "2026-07-18T14:24:19Z",
       "pushedAt": "2023-06-20T11:56:57Z"
     },
     {
       "name": "synthetic_data_render",
-      "description": null,
+      "description": "Synthetic data rendering tools for Blender-based object scenes, point clouds, and pose-data generation workflows.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/synthetic_data_render",
       "category": "Backend",
@@ -1097,12 +1097,12 @@
       "isTemplate": false,
       "defaultBranch": "dev",
       "createdAt": "2023-04-03T06:44:30Z",
-      "updatedAt": "2023-04-03T06:45:38Z",
+      "updatedAt": "2026-07-18T14:24:20Z",
       "pushedAt": "2023-06-20T08:44:18Z"
     },
     {
       "name": "synthetic_data_physics_simulation",
-      "description": null,
+      "description": "C++ synthetic-data physics simulation system for object falling, stacking, and pose-ground-truth generation.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/synthetic_data_physics_simulation",
       "category": "Uncategorized",
@@ -1122,7 +1122,7 @@
       "isTemplate": false,
       "defaultBranch": "dev",
       "createdAt": "2023-04-03T06:13:31Z",
-      "updatedAt": "2023-04-03T06:14:44Z",
+      "updatedAt": "2026-07-18T14:24:21Z",
       "pushedAt": "2023-06-16T09:54:47Z"
     },
     {
@@ -1152,7 +1152,7 @@
     },
     {
       "name": "mask6d",
-      "description": null,
+      "description": "PyTorch Mask6D framework workspace for 6D object pose estimation experiments and configuration.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/mask6d",
       "category": "Backend",
@@ -1172,12 +1172,12 @@
       "isTemplate": false,
       "defaultBranch": "main",
       "createdAt": "2023-06-12T08:00:03Z",
-      "updatedAt": "2023-06-12T08:06:55Z",
+      "updatedAt": "2026-07-18T14:24:21Z",
       "pushedAt": "2023-06-12T08:06:27Z"
     },
     {
       "name": "collision_detection_fcl",
-      "description": null,
+      "description": "Robot collision-detection library built around python-fcl, Open3D, datasets, and validation scripts.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/collision_detection_fcl",
       "category": "Backend",
@@ -1197,7 +1197,7 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-05-16T02:25:43Z",
-      "updatedAt": "2023-05-16T02:30:45Z",
+      "updatedAt": "2026-07-18T14:24:22Z",
       "pushedAt": "2023-05-16T02:31:30Z"
     },
     {
@@ -1227,7 +1227,7 @@
     },
     {
       "name": "mypage",
-      "description": null,
+      "description": "Static personal page built from HTML, CSS, SCSS, JavaScript, and image assets.",
       "visibility": "public",
       "url": "https://github.com/jacky-ch93/mypage",
       "category": "Uncategorized",
@@ -1247,7 +1247,7 @@
       "isTemplate": false,
       "defaultBranch": "main",
       "createdAt": "2023-04-14T09:45:14Z",
-      "updatedAt": "2023-04-14T10:11:28Z",
+      "updatedAt": "2026-07-18T14:24:22Z",
       "pushedAt": "2023-04-14T10:19:36Z"
     },
     {
@@ -1277,7 +1277,7 @@
     },
     {
       "name": "calibration-sdk",
-      "description": null,
+      "description": "C++ robot calibration SDK with algorithm, API, app, interface, and Windows project components.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/calibration-sdk",
       "category": "Uncategorized",
@@ -1297,12 +1297,12 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-04-03T11:52:53Z",
-      "updatedAt": "2023-04-03T11:54:13Z",
+      "updatedAt": "2026-07-18T14:24:23Z",
       "pushedAt": "2023-04-03T11:59:34Z"
     },
     {
       "name": "bpe-pre-process",
-      "description": null,
+      "description": "Open3D preprocessing pipeline for BPE raw data, converting TIFF point-cloud inputs and metadata into H5 datasets.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/bpe-pre-process",
       "category": "Backend",
@@ -1322,7 +1322,7 @@
       "isTemplate": false,
       "defaultBranch": "dev",
       "createdAt": "2023-04-03T06:10:31Z",
-      "updatedAt": "2023-04-03T06:11:26Z",
+      "updatedAt": "2026-07-18T14:24:23Z",
       "pushedAt": "2023-04-03T06:11:38Z"
     },
     {
@@ -1377,7 +1377,7 @@
     },
     {
       "name": "icp6d",
-      "description": null,
+      "description": "GPU point-cloud registration library for object 6D pose estimation using ICP-style perception pipelines.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/icp6d",
       "category": "Uncategorized",
@@ -1397,12 +1397,12 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-03-20T08:54:23Z",
-      "updatedAt": "2023-03-20T08:55:27Z",
+      "updatedAt": "2026-07-18T14:24:24Z",
       "pushedAt": "2023-03-20T08:55:31Z"
     },
     {
       "name": "ppr6d",
-      "description": null,
+      "description": "C++/CUDA perception pipeline for object 6D pose estimation with PPRNet and PPRNet++ models.",
       "visibility": "private",
       "url": "https://github.com/jacky-ch93/ppr6d",
       "category": "Uncategorized",
@@ -1422,7 +1422,7 @@
       "isTemplate": false,
       "defaultBranch": "master",
       "createdAt": "2023-03-20T08:50:14Z",
-      "updatedAt": "2023-03-20T08:52:38Z",
+      "updatedAt": "2026-07-18T14:24:25Z",
       "pushedAt": "2023-03-20T08:51:26Z"
     },
     {
@@ -2334,9 +2334,9 @@
       "primaryLanguage": null,
       "topics": [],
       "sizeBytes": 9086976,
-      "lfsBytes": 1470820078,
-      "lfsPointerCount": 25,
-      "lfsScanStatus": "complete",
+      "lfsBytes": 1285309382,
+      "lfsPointerCount": 19,
+      "lfsScanStatus": "partial",
       "stars": 0,
       "forks": 0,
       "watchers": 0,
