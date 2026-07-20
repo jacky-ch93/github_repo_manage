@@ -115,16 +115,11 @@ function renderLanguageBars(languages) {
 function renderFilters() {
   const languages = unique(state.repos.map((repo) => repo.primaryLanguage || "Unknown")).sort(collator.compare);
   const categories = unique(state.repos.flatMap(getRepoCategories)).sort(collator.compare);
-  const typeCounts = {
-    source: state.repos.filter((repo) => !repo.fork).length,
-    fork: state.repos.filter((repo) => repo.fork).length,
-    template: state.repos.filter((repo) => repo.isTemplate).length,
-  };
   els.repositoryTypeFilter.innerHTML = `
     <option value="all">全部来源</option>
-    <option value="source">原创（Source） · ${number(typeCounts.source)}</option>
-    <option value="fork">Fork 自他人 · ${number(typeCounts.fork)}</option>
-    <option value="template">Template · ${number(typeCounts.template)}</option>
+    <option value="source">原创（Source）</option>
+    <option value="fork">Fork 自他人</option>
+    <option value="template">Template</option>
   `;
   els.languageFilter.innerHTML = `<option value="all">全部语言</option>${languages
     .map((language) => `<option value="${escapeHtml(language)}">${escapeHtml(language)}</option>`)
@@ -213,7 +208,10 @@ function renderFilterState({ query, visibility, repositoryType, language, catego
   if (sort !== "pushed") filters.push(`排序 ${els.sortSelect.selectedOptions[0].textContent}`);
 
   els.activeFilters.innerHTML = filters.length
-    ? `<span class="filter-summary">已应用：${filters.map(escapeHtml).join(" / ")}</span>`
+    ? `
+      <span class="filter-summary">已应用：${filters.map(escapeHtml).join(" / ")}</span>
+      <span class="filter-result-count">共 ${number(state.filtered.length)} 个代码仓</span>
+    `
     : "";
   els.clearFilters.disabled = filters.length === 0;
 }

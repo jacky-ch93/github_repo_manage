@@ -387,10 +387,14 @@ h2 {
 }
 
 .active-filter-state {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   min-height: 29px;
   padding: 8px 2px 0;
   color: var(--ri-muted);
   font-size: 11px;
+  gap: 8px 20px;
 }
 
 .active-filter-state:empty {
@@ -398,8 +402,14 @@ h2 {
   padding-top: 0;
 }
 
-.filter-summary {
+.filter-summary,
+.filter-result-count {
   font-family: var(--ri-font-mono);
+}
+
+.filter-result-count {
+  flex: 0 0 auto;
+  color: var(--ri-ink);
 }
 
 .repo-list {
@@ -718,6 +728,11 @@ h2 {
 }
 
 @media (max-width: 440px) {
+  .active-filter-state {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
   .taxonomy {
     grid-template-columns: 1fr;
   }
