@@ -17,6 +17,7 @@ const els = {
   repoList: document.querySelector("#repoList"),
   searchInput: document.querySelector("#searchInput"),
   visibilityFilter: document.querySelector("#visibilityFilter"),
+  repositoryTypeFilter: document.querySelector("#repositoryTypeFilter"),
   languageFilter: document.querySelector("#languageFilter"),
   categoryFilter: document.querySelector("#categoryFilter"),
   sortSelect: document.querySelector("#sortSelect"),
@@ -46,7 +47,7 @@ async function init() {
 }
 
 function bindEvents() {
-  [els.searchInput, els.visibilityFilter, els.languageFilter, els.categoryFilter, els.sortSelect].forEach((el) => {
+  [els.searchInput, els.visibilityFilter, els.repositoryTypeFilter, els.languageFilter, els.categoryFilter, els.sortSelect].forEach((el) => {
     el.addEventListener("input", applyFilters);
   });
   els.clearFilters.addEventListener("click", clearFilters);
@@ -76,7 +77,7 @@ function renderTaxonomy(summary) {
     ["可见性", { Public: summary.public, Private: summary.private }, 12],
     ["学术领域", summary.categories, 8],
     ["状态", { Active: summary.active, Archived: summary.archived }, 12],
-    ["类型", { Source: summary.sources, Fork: summary.forks, Template: summary.templates }, 12],
+    ["仓库来源", { Source: summary.sources, Fork: summary.forks, Template: summary.templates }, 12],
   ];
 
   els.taxonomy.innerHTML = groups
@@ -114,6 +115,17 @@ function renderLanguageBars(languages) {
 function renderFilters() {
   const languages = unique(state.repos.map((repo) => repo.primaryLanguage || "Unknown")).sort(collator.compare);
   const categories = unique(state.repos.flatMap(getRepoCategories)).sort(collator.compare);
+  const typeCounts = {
+    source: state.repos.filter((repo) => !repo.fork).length,
+    fork: state.repos.filter((repo) => repo.fork).length,
+    template: state.repos.filter((repo) => repo.isTemplate).length,
+  };
+  els.repositoryTypeFilter.innerHTML = `
+    <option value="all">全部来源</option>
+    <option value="source">原创（Source） · ${number(typeCounts.source)}</option>
+    <option value="fork">Fork 自他人 · ${number(typeCounts.fork)}</option>
+    <option value="template">Template · ${number(typeCounts.template)}</option>
+  `;
   els.languageFilter.innerHTML = `<option value="all">全部语言</option>${languages
     .map((language) => `<option value="${escapeHtml(language)}">${escapeHtml(language)}</option>`)
     .join("")}`;
@@ -125,6 +137,7 @@ function renderFilters() {
 function applyFilters() {
   const query = els.searchInput.value.trim().toLowerCase();
   const visibility = els.visibilityFilter.value;
+  const repositoryType = els.repositoryTypeFilter.value;
   const language = els.languageFilter.value;
   const category = els.categoryFilter.value;
   const sort = els.sortSelect.value;
@@ -132,15 +145,24 @@ function applyFilters() {
   state.filtered = state.repos
     .filter((repo) => {
       const categories = getRepoCategories(repo);
-      const haystack = [repo.name, repo.description, repo.primaryLanguage, ...categories, ...(repo.topics || [])].join(" ").toLowerCase();
+      const haystack = [
+        repo.name,
+        repo.description,
+        repo.primaryLanguage,
+        repo.fork ? "fork" : "source 原创",
+        repo.isTemplate ? "template" : "",
+        ...categories,
+        ...(repo.topics || []),
+      ].join(" ").toLowerCase();
       return (!query || haystack.includes(query)) &&
         (visibility === "all" || repo.visibility === visibility) &&
+        matchesRepositoryType(repo, repositoryType) &&
         (language === "all" || (repo.primaryLanguage || "Unknown") === language) &&
         (category === "all" || categories.includes(category));
     })
     .sort((a, b) => sortRepos(a, b, sort));
 
-  renderFilterState({ query, visibility, language, category, sort });
+  renderFilterState({ query, visibility, repositoryType, language, category, sort });
   renderRepos();
 }
 
@@ -181,10 +203,11 @@ function renderRepos() {
     .join("");
 }
 
-function renderFilterState({ query, visibility, language, category, sort }) {
+function renderFilterState({ query, visibility, repositoryType, language, category, sort }) {
   const filters = [];
   if (query) filters.push(`搜索 “${query}”`);
   if (visibility !== "all") filters.push(visibility);
+  if (repositoryType !== "all") filters.push(els.repositoryTypeFilter.selectedOptions[0].textContent);
   if (language !== "all") filters.push(language);
   if (category !== "all") filters.push(category);
   if (sort !== "pushed") filters.push(`排序 ${els.sortSelect.selectedOptions[0].textContent}`);
@@ -198,11 +221,19 @@ function renderFilterState({ query, visibility, language, category, sort }) {
 function clearFilters() {
   els.searchInput.value = "";
   els.visibilityFilter.value = "all";
+  els.repositoryTypeFilter.value = "all";
   els.languageFilter.value = "all";
   els.categoryFilter.value = "all";
   els.sortSelect.value = "pushed";
   applyFilters();
   els.searchInput.focus();
+}
+
+function matchesRepositoryType(repo, repositoryType) {
+  if (repositoryType === "source") return !repo.fork;
+  if (repositoryType === "fork") return repo.fork;
+  if (repositoryType === "template") return repo.isTemplate;
+  return true;
 }
 
 function languageColor(language) {
