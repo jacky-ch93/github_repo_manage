@@ -73,20 +73,20 @@ function renderSummary(data) {
 
 function renderTaxonomy(summary) {
   const groups = [
-    ["可见性", { Public: summary.public, Private: summary.private }],
-    ["业务分类", summary.categories],
-    ["状态", { Active: summary.active, Archived: summary.archived }],
-    ["类型", { Source: summary.sources, Fork: summary.forks, Template: summary.templates }],
+    ["可见性", { Public: summary.public, Private: summary.private }, 12],
+    ["学术领域", summary.categories, 8],
+    ["状态", { Active: summary.active, Archived: summary.archived }, 12],
+    ["类型", { Source: summary.sources, Fork: summary.forks, Template: summary.templates }, 12],
   ];
 
   els.taxonomy.innerHTML = groups
-    .map(([title, values]) => {
+    .map(([title, values, limit]) => {
       const entries = Array.isArray(values) ? values : Object.entries(values).map(([name, count]) => ({ name, count }));
       return `
         <div class="taxonomy-group">
           <b>${escapeHtml(title)}</b>
           <div class="chip-row">
-            ${entries.slice(0, 12).map((item) => `<span class="taxonomy-chip">${escapeHtml(item.name)} <em>${number(item.count)}</em></span>`).join("")}
+            ${entries.slice(0, limit).map((item) => `<span class="taxonomy-chip">${escapeHtml(item.name)} <em>${number(item.count)}</em></span>`).join("")}
           </div>
         </div>
       `;
@@ -113,11 +113,11 @@ function renderLanguageBars(languages) {
 
 function renderFilters() {
   const languages = unique(state.repos.map((repo) => repo.primaryLanguage || "Unknown")).sort(collator.compare);
-  const categories = unique(state.repos.map((repo) => repo.category || "Uncategorized")).sort(collator.compare);
+  const categories = unique(state.repos.flatMap(getRepoCategories)).sort(collator.compare);
   els.languageFilter.innerHTML = `<option value="all">全部语言</option>${languages
     .map((language) => `<option value="${escapeHtml(language)}">${escapeHtml(language)}</option>`)
     .join("")}`;
-  els.categoryFilter.innerHTML = `<option value="all">全部分类</option>${categories
+  els.categoryFilter.innerHTML = `<option value="all">全部学术领域</option>${categories
     .map((category) => `<option value="${escapeHtml(category)}">${escapeHtml(category)}</option>`)
     .join("")}`;
 }
@@ -131,11 +131,12 @@ function applyFilters() {
 
   state.filtered = state.repos
     .filter((repo) => {
-      const haystack = [repo.name, repo.description, repo.primaryLanguage, repo.category, ...(repo.topics || [])].join(" ").toLowerCase();
+      const categories = getRepoCategories(repo);
+      const haystack = [repo.name, repo.description, repo.primaryLanguage, ...categories, ...(repo.topics || [])].join(" ").toLowerCase();
       return (!query || haystack.includes(query)) &&
         (visibility === "all" || repo.visibility === visibility) &&
         (language === "all" || (repo.primaryLanguage || "Unknown") === language) &&
-        (category === "all" || (repo.category || "Uncategorized") === category);
+        (category === "all" || categories.includes(category));
     })
     .sort((a, b) => sortRepos(a, b, sort));
 
@@ -164,7 +165,7 @@ function renderRepos() {
           <p class="repo-desc">${escapeHtml(repo.description || "无描述")}</p>
           <div class="repo-meta">
             <span class="language" style="--language-color:${languageColor(repo.primaryLanguage)}">${escapeHtml(repo.primaryLanguage || "Unknown")}</span>
-            <span>${escapeHtml(repo.category || "Uncategorized")}</span>
+            ${getRepoCategories(repo).map((category) => `<span class="repo-category">${escapeHtml(category)}</span>`).join("")}
             <span>★ ${number(repo.stars)}</span>
             <span>⑂ ${number(repo.forks)}</span>
             <span>更新 ${formatDate(repo.pushedAt)}</span>
@@ -225,6 +226,11 @@ function languageColor(language) {
   return colors[language || "Unknown"] || "#6b756f";
 }
 
+function getRepoCategories(repo) {
+  if (Array.isArray(repo.categories) && repo.categories.length) return repo.categories.slice(0, 3);
+  return [repo.category || "其他计算领域"];
+}
+
 function sortRepos(a, b, sort) {
   if (sort === "size") return b.sizeBytes - a.sizeBytes;
   if (sort === "lfs") return b.lfsBytes - a.lfsBytes;
@@ -246,7 +252,7 @@ function buildSummary(repos) {
     templates: repos.filter((repo) => repo.isTemplate).length,
     totalSizeBytes: repos.reduce((sum, repo) => sum + repo.sizeBytes, 0),
     totalLfsBytes: repos.reduce((sum, repo) => sum + repo.lfsBytes, 0),
-    categories: countBy(repos.map((repo) => repo.category || "Uncategorized")),
+    categories: countBy(repos.flatMap(getRepoCategories)),
     languages,
     topics,
   };

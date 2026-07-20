@@ -496,6 +496,11 @@ h2 {
   color: var(--ri-blue);
 }
 
+.repo-category {
+  color: var(--ri-blue);
+  font-weight: 650;
+}
+
 .repo-stats {
   display: grid;
   min-width: 230px;

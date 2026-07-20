@@ -1,11 +1,11 @@
 # GitHub Repo Manage
 
-一个用于 GitHub Pages 的静态仪表盘，用来统计账号下代码仓的分类、大小、可见性、语言、归档状态、fork 状态，以及默认分支中可检测到的 Git LFS 指针文件体积。
+一个用于 GitHub Pages 的静态仪表盘，用来统计账号下代码仓的学术领域、大小、可见性、语言、归档状态、fork 状态，以及默认分支中可检测到的 Git LFS 指针文件体积。
 
 ## 功能
 
 - 顶部总览：仓库总数、Public 数、Private 数、总仓库大小、默认分支 LFS 指针体积
-- 分类统计：可见性、语言、主题、归档、fork、模板仓库
+- 学术分类：根据仓库描述、README、topic、语言和文件结构自动生成最多 3 个领域标签
 - 仓库列表：搜索、筛选、排序、查看大小和 LFS 估算
 - 自动更新：GitHub Actions 支持手动触发和每日定时刷新
 
@@ -21,19 +21,27 @@ node scripts/fetch-github-repos.mjs
 
 生成结果会写入 `data/repos.json`。
 
-## 调整仓库分类
+## 学术领域分类
 
-编辑 `config/categories.json`。每个分类可以按仓库名、主语言、topic 匹配：
+分类器读取仓库名、描述、topic、README、主语言和默认分支文件路径，并对命中信号加权。每个仓库按得分最多保留 3 个学术领域；没有达到最低置信度时归入“其他计算领域”。
+
+分类体系定义在 `config/academic-taxonomy.json`。每个领域可以配置 topic、仓库名、强关键词、一般关键词、文件路径和语言信号：
 
 ```json
 {
-  "name": "Infrastructure",
+  "name": "计算机视觉",
+  "minScore": 4,
   "match": {
-    "topic": ["infra", "devops"],
-    "name": ["deploy", "ops"]
+    "topics": ["computer-vision", "object-detection"],
+    "names": ["vision", "detect", "pose"],
+    "strongKeywords": ["computer vision", "计算机视觉", "目标检测"],
+    "keywords": ["opencv", "image processing"],
+    "files": ["(^|/)vision/", "opencv"]
   }
 }
 ```
+
+权重从高到低依次为 topic、仓库名、描述、文件路径和 README。语言只作为弱信号，不会单独决定分类。
 
 ## GitHub Pages 部署
 
@@ -49,13 +57,14 @@ node scripts/fetch-github-repos.mjs
 
 `.github/workflows/update-data.yml` 会在 CI 中执行完整扫描：
 
-- `workflow_dispatch`：手动触发，可选择是否扫描 LFS，以及每个仓库最多检查多少个 LFS pointer 候选文件
+- `workflow_dispatch`：手动触发，可选择是否扫描 LFS，以及每个仓库最多检查多少个 LFS pointer 候选文件；学术分类始终读取 README 和文件树
 - `schedule`：每天 UTC 02:18 自动刷新
 - `push`：只部署仓库里已提交的 `data/repos.json`，不重新扫描 GitHub API
 - 生成 `data/repos.json` 后，如果数据变化，CI 会自动提交并部署 GitHub Pages
 - CI job 设置了 30 分钟超时，避免大仓库或 API 变慢时长期挂起
 
 如果只想快速刷新仓库数量、public/private、语言和大小，手动运行时把 `scan_lfs` 设为 `false`。
+关闭 LFS 扫描时会保留已有 LFS 统计，不会清零历史结果。
 
 ## 关于 LFS 统计
 

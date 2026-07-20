@@ -1,0 +1,170 @@
+{
+  "categories": [
+    {
+      "name": "机器人学",
+      "minScore": 4,
+      "match": {
+        "topics": ["robotics?", "ros2?", "slam", "robot-control", "humanoid"],
+        "names": ["robot", "robotics", "ros2?", "slam", "manipulat", "hexapod", "humanoid"],
+        "strongKeywords": ["robotics?", "机器人", "机械臂", "具身智能", "robot controller", "robot learning", "motion planning", "simultaneous localization and mapping"],
+        "keywords": ["navigation", "manipulation", "gazebo", "isaac gym", "urdf", "xacro", "kinematics", "locomotion"],
+        "files": ["\\.urdf$", "\\.xacro$", "(^|/)launch/", "(^|/)msg/", "(^|/)srv/", "package\\.xml$"]
+      }
+    },
+    {
+      "name": "计算机视觉",
+      "minScore": 4,
+      "match": {
+        "topics": ["computer-vision", "object-detection", "image-segmentation", "pose-estimation", "anomaly-detection"],
+        "names": ["vision", "detect", "segment", "yolo", "opencv", "pose", "anomaly", "imagenet"],
+        "strongKeywords": ["computer vision", "计算机视觉", "object detection", "目标检测", "image segmentation", "图像分割", "pose estimation", "位姿估计", "anomaly detection", "defect detection", "surface defect", "缺陷检测", "hand[- ]eye calibration"],
+        "keywords": ["opencv", "image processing", "图像处理", "feature matching", "tracking", "camera calibration", "ocr", "visual inspection"],
+        "files": ["(^|/)(images?|vision|detection|segmentation)/", "opencv", "yolo", "detectron", "mmcv"]
+      }
+    },
+    {
+      "name": "机器学习",
+      "minScore": 4,
+      "match": {
+        "topics": ["machine-learning", "deep-learning", "neural-network", "few-shot-learning", "reinforcement-learning"],
+        "names": ["machine[-_]?learning", "deep[-_]?learning", "few[-_]?shot", "neural", "pytorch", "tensorflow", "imagenet"],
+        "strongKeywords": ["machine learning", "机器学习", "deep learning", "深度学习", "neural network", "神经网络", "few[- ]shot", "少样本", "reinforcement learning", "强化学习"],
+        "keywords": ["pytorch", "tensorflow", "training pipeline", "model training", "inference", "classification", "representation learning", "self-supervised"],
+        "files": ["(^|/)(models?|datasets?|trainers?)/", "(^|/)train\\.py$", "pytorch", "tensorflow", "checkpoints?"]
+      }
+    },
+    {
+      "name": "自然语言处理与大模型",
+      "minScore": 5,
+      "match": {
+        "topics": ["nlp", "large-language-model", "llm", "rag", "language-model", "agents?"],
+        "names": ["(^|[-_])(llm|nlp|rag|gpt|bert|embedding|prompt|agent)([-_]|$)", "claude"],
+        "strongKeywords": ["natural language processing", "自然语言处理", "large language model", "大语言模型", "大模型", "retrieval[- ]augmented generation", "生成式 ai"],
+        "keywords": ["\\bllm\\b", "\\brag\\b", "language model", "embedding", "prompt", "tokenizer", "transformer", "ai agent", "智能体"],
+        "files": ["(^|/)prompts?/", "(^|/)(tokenizer|tokenization)/", "(^|/)embeddings?/", "(^|/)vector[-_]?store/", "(^|/)agents?/"]
+      }
+    },
+    {
+      "name": "三维视觉与计算机图形学",
+      "minScore": 3,
+      "match": {
+        "topics": ["3d", "computer-graphics", "point-cloud", "nerf", "gaussian-splatting", "rendering"],
+        "names": ["open3d", "point[-_]?cloud", "render", "nerf", "mesh", "3d", "(^|[-_])(pcl|vtk|openni|pcd)([-_]|$)"],
+        "strongKeywords": ["computer graphics", "计算机图形学", "3d vision", "三维视觉", "point cloud", "点云", "neural radiance field", "gaussian splatting"],
+        "keywords": ["rendering", "mesh", "voxel", "rgb-d", "depth camera", "open3d", "pcl", "opengl", "ray tracing", "region growing"],
+        "files": ["\\.ply$", "\\.obj$", "\\.stl$", "\\.pcd$", "(^|/)(meshes|pointclouds|shaders|render)/"]
+      }
+    },
+    {
+      "name": "信息检索与知识工程",
+      "minScore": 5,
+      "match": {
+        "topics": ["information-retrieval", "search", "recommendation", "knowledge-graph", "question-answering"],
+        "names": ["search", "retriev", "recommend", "knowledge[-_]?graph", "query"],
+        "strongKeywords": ["information retrieval", "信息检索", "knowledge graph", "知识图谱", "recommendation system", "推荐系统", "question answering", "问答系统"],
+        "keywords": ["semantic search", "vector search", "ranking", "retrieval", "query engine", "document search", "knowledge base"],
+        "files": ["retriev", "ranker", "search[-_]?index", "knowledge[-_]?base", "vector[-_]?store"]
+      }
+    },
+    {
+      "name": "数据科学与数据工程",
+      "minScore": 5,
+      "match": {
+        "topics": ["data-science", "data-engineering", "data-pipeline", "analytics", "dataset"],
+        "names": ["dataset", "data[-_](pipeline|process|tool)", "analytics", "etl"],
+        "strongKeywords": ["data science", "数据科学", "data engineering", "数据工程", "data pipeline", "数据管道", "large[- ]scale data processing"],
+        "keywords": ["\\betl\\b", "analytics", "pandas", "data collection", "data cleaning", "data warehouse"],
+        "files": ["(^|/)(etl|pipelines)/", "\\.parquet$", "\\.csv$", "spark", "airflow"]
+      }
+    },
+    {
+      "name": "优化、控制与状态估计",
+      "minScore": 4,
+      "match": {
+        "topics": ["control", "optimization", "state-estimation", "trajectory-optimization"],
+        "names": ["control", "optim", "estimat", "kalman", "trajectory", "planner", "ceres"],
+        "strongKeywords": ["control system", "控制系统", "state estimation", "状态估计", "trajectory optimization", "轨迹优化", "optimal control", "最优控制"],
+        "keywords": ["kalman filter", "model predictive control", "\\bmpc\\b", "pid controller", "bundle adjustment", "nonlinear optimization", "sensor fusion"],
+        "files": ["(^|/)(control|controller|estimation|optimization|planner)/", "kalman", "ceres", "g2o"]
+      }
+    },
+    {
+      "name": "科学计算与仿真",
+      "minScore": 4,
+      "match": {
+        "topics": ["scientific-computing", "simulation", "numerical-methods", "physics-simulation"],
+        "names": ["simulat", "numerical", "matlab", "physics", "eigen"],
+        "strongKeywords": ["scientific computing", "科学计算", "numerical method", "数值方法", "physics simulation", "物理仿真", "finite element", "有限元"],
+        "keywords": ["simulation", "仿真", "numpy", "scipy", "matlab", "monte carlo", "differential equation"],
+        "files": ["\\.m$", "(^|/)(simulation|simulator|numerical)/", "CMakeLists\\.txt$"],
+        "languages": ["matlab", "fortran", "julia"]
+      }
+    },
+    {
+      "name": "人机交互",
+      "minScore": 4,
+      "match": {
+        "topics": ["human-computer-interaction", "hci", "accessibility", "browser-extension", "visualization"],
+        "names": ["browser[-_]?extension", "weapp", "dashboard", "visualiz", "ui[-_]", "tab[-_]?out", "ribbon", "xaml"],
+        "strongKeywords": ["human-computer interaction", "人机交互", "user interface", "用户界面", "interaction design", "交互设计", "data visualization", "数据可视化"],
+        "keywords": ["browser extension", "chrome extension", "web interface", "dashboard", "mini program", "小程序", "accessibility", "frontend", "\\bwpf\\b", "\\bmvvm\\b"],
+        "files": ["manifest\\.json$", "(^|/)(components|pages|views)/", "vite\\.config", "next\\.config", "src/app"]
+      }
+    },
+    {
+      "name": "分布式系统与网络",
+      "minScore": 6,
+      "match": {
+        "topics": ["distributed-systems", "networking", "rpc", "microservices", "real-time"],
+        "names": ["server", "network", "distributed", "rpc", "socket"],
+        "strongKeywords": ["distributed system", "分布式系统", "computer network", "计算机网络", "network protocol", "网络协议", "microservice", "微服务", "web proxy", "网络代理", "通信系统", "通讯系统"],
+        "keywords": ["websocket", "grpc", "message queue", "realtime", "real-time", "socket", "client-server", "api server"],
+        "files": ["\\.proto$", "(^|/)(server|network|rpc)/", "docker-compose"]
+      }
+    },
+    {
+      "name": "计算机系统与基础设施",
+      "minScore": 5,
+      "match": {
+        "topics": ["operating-systems", "compiler", "database", "infrastructure", "devops", "kubernetes"],
+        "names": ["compiler", "database", "kernel", "infra", "deploy", "kubernetes", "docker"],
+        "strongKeywords": ["operating system", "操作系统", "compiler", "编译器", "database system", "数据库系统", "cloud infrastructure", "云基础设施"],
+        "keywords": ["container", "kubernetes", "docker", "terraform", "deployment", "ci/cd", "storage engine", "runtime"],
+        "files": ["Dockerfile$", "docker-compose", "terraform", "k8s", "helm/"]
+      }
+    },
+    {
+      "name": "软件工程与开发工具",
+      "minScore": 4,
+      "match": {
+        "topics": ["developer-tools", "cli", "sdk", "automation", "code-generation", "testing"],
+        "names": ["(^|[-_])(cli|sdk|tool|plugin|skill)([-_]|$)", "github"],
+        "strongKeywords": ["software engineering", "软件工程", "developer tool", "开发者工具", "command line interface", "code generation", "代码生成"],
+        "keywords": ["\\bcli\\b", "\\bsdk\\b", "automation", "plugin", "testing framework", "build tool", "github action", "agent skill"],
+        "files": ["(^|/)cli/", "bin/", "\\.github/workflows/", "package\\.json$", "pyproject\\.toml$"]
+      }
+    },
+    {
+      "name": "网络安全与隐私",
+      "minScore": 8,
+      "match": {
+        "topics": ["security", "privacy", "cryptography", "authentication", "vulnerability"],
+        "names": ["security", "crypto", "auth", "vulnerab", "encrypt"],
+        "strongKeywords": ["cybersecurity", "网络安全", "information security", "信息安全", "cryptography", "密码学", "privacy preserving", "隐私保护"],
+        "keywords": ["authentication", "authorization", "encryption", "vulnerability", "penetration testing", "zero trust", "jwt auth"],
+        "files": ["(^|/)(security|auth|crypto)/", "oauth", "jwt", "encrypt"]
+      }
+    },
+    {
+      "name": "金融科技",
+      "minScore": 5,
+      "match": {
+        "topics": ["fintech", "finance", "trading", "quantitative-finance", "portfolio"],
+        "names": ["finance", "fund", "trading", "portfolio", "stock"],
+        "strongKeywords": ["financial technology", "金融科技", "quantitative finance", "量化金融", "algorithmic trading", "智能投顾"],
+        "keywords": ["finance", "基金", "stock", "股票", "trading", "投资", "portfolio", "risk management"],
+        "files": ["(^|/)(finance|trading|portfolio)/", "backtest"]
+      }
+    }
+  ]
+}

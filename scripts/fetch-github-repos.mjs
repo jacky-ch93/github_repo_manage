@@ -1,5 +1,10 @@
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
+import {
+  MAX_ACADEMIC_CATEGORIES,
+  classifyRepository,
+  repositoryCategories,
+} from "./classify-repository.mjs";
 
 const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || process.env.REPO_STATS_TOKEN;
 const owner = process.env.GITHUB_OWNER;
@@ -7,7 +12,7 @@ const apiBase = process.env.GITHUB_API_URL || "https://api.github.com";
 const outputPath = process.env.OUTPUT_PATH || "data/repos.json";
 const lfsScanLimit = Number(process.env.LFS_POINTER_SCAN_LIMIT || 120);
 const scanLfs = process.env.SCAN_LFS !== "false";
-const categoryRulesPath = process.env.CATEGORY_RULES_PATH || "config/categories.json";
+const taxonomyRulesPath = process.env.CATEGORY_RULES_PATH || "config/academic-taxonomy.json";
 
 if (!token) {
   console.error("Missing GITHUB_TOKEN, GH_TOKEN, or REPO_STATS_TOKEN.");
@@ -15,19 +20,23 @@ if (!token) {
 }
 
 const viewer = owner || (await api("/user")).login;
-const categoryRules = await loadCategoryRules();
+const taxonomyRules = await loadTaxonomyRules();
+const previousRepositories = await loadPreviousRepositories();
 const repositories = await collectRepositories(viewer);
 const enriched = [];
 
 for (const [index, repo] of repositories.entries()) {
   console.log(`[${index + 1}/${repositories.length}] ${repo.full_name}`);
-  const lfs = await scanLfsPointers(repo);
+  const content = await inspectRepositoryContent(repo);
+  const categories = classifyRepository(repo, content, taxonomyRules);
+  const lfs = await scanLfsPointers(repo, content.tree, previousRepositories.get(repo.name));
   enriched.push({
     name: repo.name,
     description: repo.description,
     visibility: repo.private ? "private" : "public",
     url: repo.html_url,
-    category: categorize(repo, categoryRules),
+    category: categories[0],
+    categories,
     primaryLanguage: repo.language,
     topics: repo.topics || [],
     sizeBytes: (repo.size || 0) * 1024,
@@ -52,6 +61,10 @@ for (const [index, repo] of repositories.entries()) {
 const data = {
   generatedAt: new Date().toISOString(),
   owner: viewer,
+  classification: {
+    scheme: "academic-multilabel-v1",
+    maxCategories: MAX_ACADEMIC_CATEGORIES,
+  },
   summary: buildSummary(enriched),
   repositories: enriched.sort((a, b) => new Date(b.pushedAt || 0) - new Date(a.pushedAt || 0)),
 };
@@ -72,19 +85,43 @@ async function collectRepositories(login) {
   return repos;
 }
 
-async function scanLfsPointers(repo) {
-  if (!scanLfs) return { bytes: 0, count: 0, status: "disabled" };
+async function inspectRepositoryContent(repo) {
+  if (!repo.default_branch) return { readme: "", paths: [], tree: null };
+
+  const [readmePayload, tree] = await Promise.all([
+    apiOptional(`/repos/${repo.owner.login}/${repo.name}/readme`),
+    apiOptional(`/repos/${repo.owner.login}/${repo.name}/git/trees/${encodeURIComponent(repo.default_branch)}?recursive=1`),
+  ]);
+
+  const readme = readmePayload?.content
+    ? Buffer.from(readmePayload.content, readmePayload.encoding || "base64").toString("utf8").slice(0, 120_000)
+    : "";
+  const paths = Array.isArray(tree?.tree)
+    ? tree.tree.filter((entry) => entry.type === "blob").map((entry) => entry.path).slice(0, 8_000)
+    : [];
+
+  return { readme, paths, tree };
+}
+
+async function scanLfsPointers(repo, treePayload, previous) {
+  if (!scanLfs) {
+    return {
+      bytes: previous?.lfsBytes || 0,
+      count: previous?.lfsPointerCount || 0,
+      status: previous ? "preserved" : "disabled",
+    };
+  }
   if (!repo.default_branch) return { bytes: 0, count: 0, status: "no-default-branch" };
 
   try {
-    const tree = await api(`/repos/${repo.owner.login}/${repo.name}/git/trees/${encodeURIComponent(repo.default_branch)}?recursive=1`);
-    if (!Array.isArray(tree.tree)) return { bytes: 0, count: 0, status: "no-tree" };
+    if (!Array.isArray(treePayload?.tree)) return { bytes: 0, count: 0, status: "no-tree" };
+    const tree = treePayload.tree;
 
-    if (!(await treeUsesLfs(repo, tree.tree))) {
+    if (!(await treeUsesLfs(repo, tree))) {
       return { bytes: 0, count: 0, status: "no-lfs-attributes" };
     }
 
-    const candidates = tree.tree
+    const candidates = tree
       .filter((entry) => entry.type === "blob" && entry.size >= 90 && entry.size <= 300)
       .slice(0, lfsScanLimit);
 
@@ -135,15 +172,15 @@ function buildSummary(repos) {
     templates: repos.filter((repo) => repo.isTemplate).length,
     totalSizeBytes: repos.reduce((sum, repo) => sum + repo.sizeBytes, 0),
     totalLfsBytes: repos.reduce((sum, repo) => sum + repo.lfsBytes, 0),
-    categories: countBy(repos.map((repo) => repo.category || "Uncategorized")),
+    categories: countBy(repos.flatMap(repositoryCategories)),
     languages: countBy(repos.map((repo) => repo.primaryLanguage || "Unknown")),
     topics: countBy(repos.flatMap((repo) => repo.topics || [])),
   };
 }
 
-async function loadCategoryRules() {
+async function loadTaxonomyRules() {
   try {
-    const raw = await readFile(categoryRulesPath, "utf8");
+    const raw = await readFile(taxonomyRulesPath, "utf8");
     const parsed = JSON.parse(raw);
     return Array.isArray(parsed.categories) ? parsed.categories : [];
   } catch (error) {
@@ -152,23 +189,24 @@ async function loadCategoryRules() {
   }
 }
 
-function categorize(repo, rules) {
-  for (const rule of rules) {
-    const patterns = rule.match || {};
-    if (matchesAny(repo.name, patterns.name) || matchesAny(repo.language, patterns.language) || matchesAny(repo.topics || [], patterns.topic)) {
-      return rule.name;
-    }
+async function loadPreviousRepositories() {
+  try {
+    const raw = await readFile(outputPath, "utf8");
+    const parsed = JSON.parse(raw);
+    return new Map((parsed.repositories || []).map((repo) => [repo.name, repo]));
+  } catch (error) {
+    if (error.code === "ENOENT") return new Map();
+    throw error;
   }
-  return "Uncategorized";
 }
 
-function matchesAny(value, patterns) {
-  if (!patterns) return false;
-  const values = Array.isArray(value) ? value : [value];
-  const normalizedPatterns = Array.isArray(patterns) ? patterns : [patterns];
-  return values.some((candidate) =>
-    normalizedPatterns.some((pattern) => new RegExp(pattern, "i").test(String(candidate || ""))),
-  );
+async function apiOptional(route) {
+  try {
+    return await api(route);
+  } catch (error) {
+    if ([404, 409, 422].includes(error.status)) return null;
+    throw error;
+  }
 }
 
 function countBy(values) {
